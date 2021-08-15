@@ -2,20 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PLayer : MonoBehaviour
+public class Player : MonoBehaviour
 {
     public float walk = 0.5f;
     public float run = 1.0f;
     public Animator anim;
+    public int life;
 
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        life = GameObject.FindGameObjectsWithTag("heart").Length;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Rotate camera with mouse
+        transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X"), 0) * 3f);
+
         //Player Move forward and Animation
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey("w") || Input.GetKey(KeyCode.LeftShift) && Input.GetKey("up"))
         {
@@ -48,7 +56,6 @@ public class PLayer : MonoBehaviour
         }
         else if (Input.GetKey("d") || Input.GetKey("right"))
         {
-            //transform.Rotate(0, 1f, 0);
             transform.position += transform.right * walk * Time.deltaTime;
             anim.Play("Walk");
         }
@@ -61,7 +68,6 @@ public class PLayer : MonoBehaviour
         }
         else if (Input.GetKey("a") || Input.GetKey("left"))
         {
-            //transform.Rotate(0, -1f, 0);
             transform.position -= transform.right * walk * Time.deltaTime;
             anim.Play("Walk");
         }
@@ -74,5 +80,26 @@ public class PLayer : MonoBehaviour
         {
             anim.Play("Attack02");
         }
+    }
+
+    private void OnCollisionEnter(Collision obj)
+    {
+        if(obj.gameObject.tag == "enemy")
+        {
+            anim.Play("GetHit");
+            Destroy(GameObject.FindGameObjectWithTag("heart"));
+            life--;
+            if(life <= 0)
+            {
+                anim.Play("Death");
+                StartCoroutine(ExampleCoroutine());    
+            }
+        }
+    }
+    IEnumerator ExampleCoroutine()
+    {
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(2);
+        //Application.LoadLevel(Application.loadedLevel);
     }
 }
