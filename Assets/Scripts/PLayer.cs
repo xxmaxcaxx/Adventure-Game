@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] GameObject inventoryGameObject;
+    [SerializeField] GameObject PauseGameText;
+    [SerializeField] KeyCode[] toggleInventoryKeys;
+
     public float walk = 0.5f;
     public float run = 1.0f;
     public Animator anim;
@@ -14,6 +18,8 @@ public class Player : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        inventoryGameObject.SetActive(!inventoryGameObject.activeSelf);
+        PauseGameText.SetActive(!PauseGameText.activeSelf);
 
         life = GameObject.FindGameObjectsWithTag("heart").Length;
     }
@@ -80,6 +86,48 @@ public class Player : MonoBehaviour
         {
             anim.Play("Attack02");
         }
+
+        for(int i = 0; i < toggleInventoryKeys.Length; i++)
+        {
+            if (Input.GetKeyDown(toggleInventoryKeys[i]))
+            {
+                inventoryGameObject.SetActive(!inventoryGameObject.activeSelf);
+                if (inventoryGameObject.activeSelf)
+                {
+                    PauseGame();
+                    ShowMouseCursor();
+                    PauseGameText.SetActive(true);
+                }
+                else
+                {
+                    HideMouseCursor();
+                    ResumeGame();
+                    PauseGameText.SetActive(false);
+                }
+            }
+        }
+    }
+
+    public void ShowMouseCursor()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void HideMouseCursor()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 
     private void OnCollisionEnter(Collision obj)

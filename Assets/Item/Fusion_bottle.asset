@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bc46b99e820cc418e572a60588c669, type: 3}
+  m_Name: Fusion_bottle
+  m_EditorClassIdentifier: 
+  ItemName: Fusion Bottle
+  Icon: {fileID: 21300000, guid: 80f2463810605d443887c2fcbb6965e9, type: 3}
