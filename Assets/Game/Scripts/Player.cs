@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject InventoryText;
     [SerializeField] KeyCode[] toggleInventoryKeys;
 
-    public float walk = 0.5f;
-    public float run = 1.0f;
+    public float walk = 1.0f;
+    public float run = 2.0f;
     public Animator anim;
     public int life;
 
@@ -136,7 +137,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision obj)
     {
-        if(obj.gameObject.tag == "enemy")
+        if(obj.gameObject.tag == "enemyspell1")
         {
             anim.Play("GetHit");
             Destroy(GameObject.FindGameObjectWithTag("heart"));
@@ -152,6 +153,6 @@ public class Player : MonoBehaviour
     {
         //yield on a new YieldInstruction that waits for 5 seconds.
         yield return new WaitForSeconds(2);
-        //Application.LoadLevel(Application.loadedLevel);
+        SceneManager.LoadScene("GameOver");
     }
 }
